@@ -24,11 +24,16 @@ import scipy
 from tabulate import tabulate
 import csv
 import statsmodels.formula.api as smm #OLS
+from arch import arch_model
+from scipy import stats
+import matplotlib.cm as cm
 
-#locate in the correct directory:
-path = '/home/julien/master-s_thesis/data' #path to the data
-path_figure = '/home/julien/master-s_thesis/figures/' #where to save the figures
-path_table = '/home/julien/master-s_thesis/tables/' #where to save the tables
+#################################
+# PATHS
+# change "path_main" if necessary
+path = '/home/julien/Final-Project-Julien-Pascal/data' #path to the data
+path_figure = '/home/julien/Final-Project-Julien-Pascal/figures/' #where to save the figures
+path_table = '/home/julien/Final-Project-Julien-Pascal/tables/' #where to save the tables
 os.chdir(path) #locate in the folder with the data
 
 
@@ -93,28 +98,39 @@ U_15 = df.loc[df['Series ID'] == 'LNS13008756','Value']
 #Unemployed for 27 Weeks and over: LNS13008636
 U_27 = df.loc[df['Series ID'] == 'LNS13008636','Value']
 
+#Color Map:
+cmap = plt.cm.plasma
+colors = cmap(np.linspace(0,1,100)) 
+
 # Unemployment rate:
 Unemployment_rate =[]
 Unemployment_rate =(Unemployed.values/(Unemployed.values+Employed.values))*100 
 
 # Plot Employed, Unemployed: : 
 fig, ax1 = plt.subplots() 
+#ax1.plot(dateList, Employed, color='r')
+#ax1.plot(dateList, Unemployed, color='g')
+
 ax1.plot(dateList, Employed, color='r')
-ax1.plot(dateList, Unemployed, color='g')
+ax1.plot(dateList, Unemployed, color='k', linestyle = '--')
+
 # Make the y-axis label and tick labels match the line color.
 ax1.set_ylabel('Employed and unemployed in thousands', color='k')
 
 ax2 = ax1.twinx()
 #ax2.plot(dateList, Unemployment_rate, color='b')
 #ax2.plot(dateList, Participation_rate, color='K', ls ='--')
-ax2.set_ylabel('Unemployment rate', color='k' )
+ax2.set_ylabel('Unemployment rate', color='k')
 
 ax1.legend(['Employed', 'Unemployed'], loc='best', fancybox = True, framealpha=0.5)
-ax2.fill_between(dateList, 0, Unemployment_rate, color='b', alpha=0.2)
+
+#ax2.fill_between(dateList, 0, Unemployment_rate, color='b', alpha=0.2)
+
+ax2.fill_between(dateList, 0, Unemployment_rate, color= 'b', alpha=0.2)
 
 ax2.legend(['Unemployment rate'], loc='best', fancybox = True, framealpha=0.5)
 
-plt.savefig(path_figure + 'Unemployment_1948_2016')
+plt.savefig(path_figure + 'Unemployment_1951_2015')
 plt.show()
 
 #############################################
@@ -272,18 +288,20 @@ for i in range(0,len(Year)-1):
 
 
 plt.subplot(211)
-plt.plot(dateList2, F_BLS, color = 'navy')
-plt.fill_between(dateList2, 0, F_BLS, color='navy', alpha=0.2)
+plt.plot(dateList2, F_BLS, color = 'b')
+plt.fill_between(dateList2, 0, F_BLS, color='b', alpha=0.2)
 
 #plt.yscale('')
-plt.title('Exit rate from unemployment')
+#plt.title('Exit rate from unemployment')
 
+plt.title('Monthly job finding rate')
 plt.subplot(212)
 plt.plot(dateList2, S_BLS, color = 'r')
 plt.fill_between(dateList2, 0, S_BLS, color='r', alpha=0.2)
 
 #plt.yscale('')
-plt.title('Job destruction rate')
+#plt.title('Job destruction rate')
+plt.title('Monthly job destruction rate')
 plt.savefig(path_figure + 'Turnover_rates_BLS')
 plt.show()
 
@@ -553,7 +571,10 @@ plt.show() #Visually check it makes sense
 
 # Plot with only the predicted
 #plt.plot(df_total_merged['V'], color = 'b')
-plt.fill_between(df_total_merged['Date'].values, 0, df_total_merged['V'].values, color='k', alpha=0.4)
+#plt.fill_between(df_total_merged['Date'].values, 0, df_total_merged['V'].values, color='g', alpha=0.4)
+
+plt.fill_between(df_total_merged['Date'].values, 0, df_total_merged['V'].values, color='grey', alpha=0.2)
+
 plt.legend(['Vacancies - thousands'])
 plt.savefig(path_figure + 'Number_vacancies_monthly')
 plt.show()
@@ -681,13 +702,13 @@ for i in range(0,upper_index):
 
 # Plot this 2nd approach:
 plt.subplot(2, 1, 1)
-plt.plot(dateList5, F_BLS_quarterly, color = 'navy')
-plt.fill_between(dateList5, 0, F_BLS_quarterly, color='navy', alpha=0.2)
+plt.plot(dateList5, F_BLS_quarterly, color = 'b')
+plt.fill_between(dateList5, 0, F_BLS_quarterly, color='b', alpha=0.2)
 plt.title('Quarterly job finding rate')
 
 plt.subplot(2, 1, 2)
 plt.plot(dateList5, S_BLS_quarterly, color = 'r')
-plt.fill_between(dateList5, 0, S_BLS_quarterly, color='R', alpha=0.2)
+plt.fill_between(dateList5, 0, S_BLS_quarterly, color='r', alpha=0.2)
 plt.title('Quarterly job destruction rate')
 
 plt.savefig(path_figure + 'Quarterly_job_finding_and_job_destruction_rates')
@@ -781,6 +802,7 @@ plt.show()
 #b. Real productivity per hour:
 plt.subplot(2, 2, 1)
 plt.plot(dateList3, log_Real_compensation_hour, color="navy")
+plt.title("Log Real Compensation per hour")
 
 plt.subplot(2, 2, 2)
 plt.plot(dateList3, trend_Real_compensation_hour, color="r",)
@@ -793,6 +815,7 @@ plt.title("Cycle Component")
 plt.subplot(2, 2, 4)
 plt.plot(dateList3, exponentiated_cycle_Real_compensation_hour, color="k")
 plt.title("Exponentiated Cycle Component")
+plt.savefig(path_figure + 'Detrend_productivity')
 plt.show()
 
 ######################
@@ -812,6 +835,7 @@ plt.title("Cycle Component")
 plt.subplot(2, 2, 4)
 plt.plot(dateList4, exponentiated_cycle_Unemployment_rate, color="k")
 plt.title("Exponentiated Cycle Component")
+plt.savefig(path_figure + 'Detrend_unemployment_rate')
 plt.show()
 
 #######################
@@ -831,6 +855,7 @@ plt.title("Cycle Component")
 plt.subplot(2, 2, 4)
 plt.plot(dateList5, exponentiated_cycle_F_BLS, color="k")
 plt.title("Exponentiated Cycle Component")
+plt.savefig(path_figure + 'Detrend_job_finding_rate')
 plt.show()
 
 #########################
@@ -850,6 +875,7 @@ plt.title("Cycle Component")
 plt.subplot(2, 2, 4)
 plt.plot(dateList5, exponentiated_cycle_S_BLS, color="k")
 plt.title("Exponentiated Cycle Component")
+plt.savefig(path_figure + 'Detrend_job_destruction_rate')
 plt.show()
 
 ###############
@@ -869,6 +895,7 @@ plt.title("Cycle Component")
 plt.subplot(2, 2, 4)
 plt.plot(dateList4, exponentiated_cycle_Vacancies, color="k")
 plt.title("Exponentiated Cycle Component")
+plt.savefig(path_figure + 'Detrend_vacancies')
 plt.show()
 
 
@@ -1081,8 +1108,7 @@ with open(path_table + 'table_moments.csv', 'w') as csvfile:
 	writer = csv.writer(csvfile)
 	[writer.writerow(r) for r in table]
 
-##############################################################################
-# Variance covariance matrix of estimators used in Method of Simulated Moments:
-# i.e. [mean_prod; std_prod; mean_unemployment; std_unemployment; kurtosis_unemployment; mean_exit_rate]; 
-#moments_to_match = [cycle_Real_output, cycle_Real_output, cycle_Unemployment_rate, cycle_Unemployment_rate, cycle_Unemployment_rate, cycle_F_BLS]
-#np.cov(moments_to_match)
+##############################
+# ARCH Model for productivity
+#am = arch_model(exponentiated_cycle_Real_output)
+#res = am.fit()

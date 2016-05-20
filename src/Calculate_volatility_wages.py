@@ -263,6 +263,7 @@ for i in  np.arange(10, 100, 10):
 	table.append([variable, np.std(detrended_avg_wage[i])])
 	a=a+1
 
+
 # Output table of standard errors of detrended data in latek:
 print(tabulate(table, headers=['Decile', 'Volatility'], tablefmt="latex"))
 
@@ -302,15 +303,31 @@ plt.show()
 
 #Volatility of the delinearized deciles:
 table = [] #create a table to store the volatility
+list_volatility = []
+label_volatility = []
+ind = []
 a = 0
 for i in  np.arange(10, 100, 10):
 	variable = '%sth Decile' %i
 	print(np.std(delinear_avg_wage[i]))
 	table.append([variable, np.std(delinear_avg_wage[i])])
+	list_volatility.append(np.std(delinear_avg_wage[i]))
+	label_volatility.append(variable)
+	ind.append(a)
 	a=a+1
 
 # Output table of standard errors of delinearized data in latek:
 print(tabulate(table, headers=['Decile', 'Volatility'], tablefmt="latex"))
+
+# Make a graph out of it:
+
+fig, ax = plt.subplots()
+rects1 = ax.bar(ind, list_volatility, color='grey', alpha = 0.3)
+
+#plt.plot(ind, list_volatility)
+plt.xticks(ind, label_volatility)
+plt.show()
+
 
 #save the table in a csv format:
 with open(path_table + 'table_volatility_delinearized_wages.csv', 'w') as csvfile:
