@@ -1,8 +1,8 @@
-[![Build Status](https://travis-ci.org/JulianPasc/Final-Project-Julien-Pascal.svg?branch=master)](https://travis-ci.org/JulianPasc/Final-Project-Julien-Pascal)
+[![Build Status](https://travis-ci.org/JulianPasc/Final-Project-Julien-Pascal.svg?branch=master)](https://travis-ci.org/JulienPascal/Final-Project-Julien-Pascal)
 
-# Master's in Economics, Sciences Po Paris
-## Master's thesis
-## The Dynamics of Wage Inequality: A Search-and-matching Approach
+# Master's in Economics, Sciences Po Paris, 2015-2016
+## Master's Thesis
+## The Dynamics of Wage Inequality: A Search-and-Matching Approach
 
 This repository contains the replication files for my master's thesis. The determinants of wage inequality in a search-and-matching model are explored. The model designed Robin (2011) is estimated by the simulated method of moments using a differential evolution algorithm. Simulated data are used to analyse the relationship between the bargaining power of workers and the spread of the wage distribution. At business-cycle frequency, is the relative bargaining power of workers a major factor influencing the spread of the wage distribution? The present study shows that this is not the case. The structure of the code is presented in the flow chart below:
 
