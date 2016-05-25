@@ -10,9 +10,7 @@ This repository contains the replication files for my master's thesis. The deter
  
 
 ## Main elements of the model designed by Robin (2011):
-This is a search-and-matching model with heterogeneous agents. Firms are assumed to be identical. Search is random and worker-firm associations are formed only when the match surplus is positive. Productivity shocks occur according to a Markov process. Following a shock in productivity, worker-firm pairs with negative surplus are destroyed. On-the-job search is permitted, and firms can make counteroffers to retain their workers. 
-Wages are endogeneously determined according to a sequential auction model: unemployed workers are offered their reservation wage, while employed workers accepting an outside are offered receive all the match surplus. 
-Calibrated on the US labor market, the model is able to replicated fairly well the variation in unemployment and the volatitily in wages. It explains why low wages and high wages are more procycle than intermediate wages. 
+This is a search-and-matching model with heterogeneous agents. Firms are assumed to be identical. Search is random and worker-firm associations are formed only when the match surplus is positive. Productivity shocks occur according to a Markov process. Following a shock in productivity, worker-firm pairs with negative surplus are destroyed. On-the-job search is permitted, and firms can make counter-offers to retain their workers. Wages are endogeneously determined according to a sequential auction model: unemployed workers are offered their reservation wage, while employed workers contacted by poaching firms are offered firms' reservation wage. Calibrated on the US labor market between 1951 and 2015, the model is able to replicated fairly well the variations in unemployment and wages. It also explains why low wages and high wages are more procycle than intermediate wages. 
 
 ## Stylized facts the U.S. Labor Market
 ###Monthly unemployment rate 1951 - 2015
@@ -90,5 +88,5 @@ Update 9, 06/05/2016:
 Update 10, 06/05/2016:
 - Add some rudimentary tests
 
-Update 11, 06/05/2016:
+Update 11, 20/05/2016:
 - Improve the model "Bargaining_power_test.jl"
